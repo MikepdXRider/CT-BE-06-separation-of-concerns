@@ -1,0 +1,36 @@
+{
+  "name": "03_separation-of-concerns-demo",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "jest --verbose --runInBand --testLocationInResults --setupFiles dotenv/config",
+    "test:watch": "npm run test -- --watch",
+    "start": "node -r dotenv/config server.js",
+    "start:watch": "nodemon -r dotenv/config server.js",
+    "setup-db": "node -r dotenv/config setup-db.js",
+    "setup-heroku": "heroku run npm run setup-db"
+  },
+  "jest": {
+    "testEnvironment": "node"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@babel/eslint-parser": "^7.13.4",
+    "@babel/plugin-syntax-class-properties": "^7.12.13",
+    "@types/jest": "^26.0.20",
+    "@types/pg": "^7.14.10",
+    "eslint": "^7.20.0",
+    "jest": "^26.6.3",
+    "nodemon": "^2.0.7",
+    "supertest": "^6.1.3"
+  },
+  "dependencies": {
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "pg": "^8.5.1",
+    "twilio": "^3.57.0"
+  }
+}
