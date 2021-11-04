@@ -31,7 +31,7 @@ describe('03_separation-of-concerns-demo routes', () => {
       });
   });
 
-  it('returns an array of Order instances', async () => {
+  it('returns an array of Order instances', async() => {
     // declare two-three new order objects. 
     const firstNewObj = {
       quantity: 10
@@ -44,13 +44,13 @@ describe('03_separation-of-concerns-demo routes', () => {
     const newObjArr = [firstNewObj, secondNewObj];
 
     //  map the new object orders calling Order.insert(currNewOrderObj);
-    newObjArr.map(async currObj => await Order.insert(currObj));
+    await newObjArr.map(async currObj => await Order.insert(currObj.quantity));
 
     // declare a variable to store a Order.getAll() call.
     const getAllResponse = await Order.getAll();
-    
+
     // expect the get response to be an array containing one of the new order objects.
-    expect(getAllResponse).toEqual(expect.arrayContaining([firstNewObj]));
+    expect(getAllResponse).toEqual(expect.arrayContaining([{ ...firstNewObj, id: expect.any(String) }]));
   });
 
   // it('Returns an Order', () => {
