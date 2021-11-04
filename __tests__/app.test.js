@@ -2,6 +2,7 @@ const pool = require('../lib/utils/pool');
 const setup = require('../data/setup');
 const request = require('supertest');
 const app = require('../lib/app');
+const Order = require('../lib/models/Order.js');
 // import in orders
 
 // This doesn't make any sense to me....
@@ -30,49 +31,59 @@ describe('03_separation-of-concerns-demo routes', () => {
       });
   });
 
-  it('returns an array of Order instances', () => {
+  it('returns an array of Order instances', async () => {
     // declare two-three new order objects. 
+    const firstNewObj = {
+      quantity: 10
+    };
+    const secondNewObj = {
+      quantity: 11
+    };
 
     // declare an array consisting of the new order objects. 
+    const newObjArr = [firstNewObj, secondNewObj];
 
     //  map the new object orders calling Order.insert(currNewOrderObj);
+    newObjArr.map(async currObj => await Order.insert(currObj));
 
     // declare a variable to store a Order.getAll() call.
-
+    const getAllResponse = await Order.getAll();
+    
     // expect the get response to be an array containing one of the new order objects.
+    expect(getAllResponse).toEqual(expect.arrayContaining([firstNewObj]));
   });
 
-  it('Returns an Order', () => {
-    // declare a variable to store a new order object.
+  // it('Returns an Order', () => {
+  //   // declare a variable to store a new order object.
 
-    // declare a variable to store a Order.insert(newOrderObj) call.
+  //   // declare a variable to store a Order.insert(newOrderObj) call.
 
-    // declare a variable to store a Order.getById(insertVar.id) call.
+  //   // declare a variable to store a Order.getById(insertVar.id) call.
 
-    // expect the get response to be an object matching the new order object.
-  });
+  //   // expect the get response to be an object matching the new order object.
+  // });
 
-  it('Returns the updated Order', () => {
-    // declare a variable to store a new order object.
+  // it('Returns the updated Order', () => {
+  //   // declare a variable to store a new order object.
 
-    // declare a variable to store a Order.insert(newOrderObj) call.
+  //   // declare a variable to store a Order.insert(newOrderObj) call.
 
-    // declare a variable to store a Order.update(insertVar.id, newQuantity) call.
+  //   // declare a variable to store a Order.update(insertVar.id, newQuantity) call.
 
-    // declare a variable to store a Order.getById(insertVar.id) call.
+  //   // declare a variable to store a Order.getById(insertVar.id) call.
 
-    // expect the get response quantity to match the newQuantity.
-  });
+  //   // expect the get response quantity to match the newQuantity.
+  // });
 
-  it('Returns the deleted Order', () => {
-    // declare a variable to store a new order object.
+  // it('Returns the deleted Order', () => {
+  //   // declare a variable to store a new order object.
 
-    // declare a variable to store a Order.insert(newOrderObj) call.
+  //   // declare a variable to store a Order.insert(newOrderObj) call.
 
-    // declare a variable to store a Order.delete(insertVar.id) call.
+  //   // declare a variable to store a Order.delete(insertVar.id) call.
 
-    // expect the delete response to match the newOrderObj.
-  });
+  //   // expect the delete response to match the newOrderObj.
+  // });
 
 
 });
