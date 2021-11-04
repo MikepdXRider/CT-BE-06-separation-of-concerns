@@ -3,6 +3,7 @@ const setup = require('../data/setup');
 const request = require('supertest');
 const app = require('../lib/app');
 const Order = require('../lib/models/Order.js');
+const { insert } = require('../lib/models/Order.js');
 // import in orders
 
 // This doesn't make any sense to me....
@@ -53,15 +54,19 @@ describe('03_separation-of-concerns-demo routes', () => {
     expect(getAllResponse).toEqual(expect.arrayContaining([{ ...firstNewObj, id: expect.any(String) }]));
   });
 
-  // it('Returns an Order', () => {
-  //   // declare a variable to store a new order object.
+  it('Returns an Order', async() => {
+    // declare a variable to store a new order object.
+    const firstNewObj = {
+      quantity: 110
+    };
 
-  //   // declare a variable to store a Order.insert(newOrderObj) call.
-
-  //   // declare a variable to store a Order.getById(insertVar.id) call.
-
-  //   // expect the get response to be an object matching the new order object.
-  // });
+    // declare a variable to store a Order.insert(newOrderObj) call.
+    const insertResponse = await Order.insert(firstNewObj.quantity);
+    // declare a variable to store a Order.getById(insertVar.id) call.
+    const getByIdResponse = await Order.getById(insertResponse.id);
+    // expect the get response to be an object matching the new order object.
+    expect(getByIdResponse).toEqual({ ...firstNewObj, id: expect.any(String) });
+  });
 
   // it('Returns the updated Order', () => {
   //   // declare a variable to store a new order object.
