@@ -1,13 +1,14 @@
 const pool = require('../lib/utils/pool');
-// const twilio = require('twilio');
 const setup = require('../data/setup');
 const request = require('supertest');
 const app = require('../lib/app');
 // import in orders
 
+// This doesn't make any sense to me....
 jest.mock('twilio', () => () => ({
   messages: {
     create: jest.fn()
+    // Am I supposed to add a new property and jest.fn() per each message type? What is messages.create event referencing? 
   }
 }));
 
@@ -72,4 +73,6 @@ describe('03_separation-of-concerns-demo routes', () => {
 
     // expect the delete response to match the newOrderObj.
   });
+
+
 });
