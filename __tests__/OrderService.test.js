@@ -57,16 +57,15 @@ describe('03_separation-of-concerns-demo routes', () => {
     expect(getByIdResponse).toEqual({ id: insertResponse.id, quantity: 10 });
   });
 
-  //   it('Sends an order updated text message with the order ID and new quantity', async() => {
-  //     // declare a new order object variable.
-    
-  //     // declare a variable to store Order.insert(newOrderObj.quantity)
+  it('Sends an order updated text message with the order ID and new quantity', async() => {
+    // declare a variable to store Order.insert(newOrderObj.quantity)
+    const insertResponse = await Order.insert(7);
 
-  //     // call OrderService.update() passing a new quantity and the insertResponse.id as an arguement
+    // call OrderService.update() passing a new quantity and the insertResponse.id as an arguement
+    await OrderService.updateOrder(insertResponse.id, 10);
 
-  //     // declare a variable to store Order.getById(insertResponse.id);
-
-//     // expect(createMessage).toHaveBeenCalledTimes(1);
-//   });
+    // expect the mocked jest.fn to have been called one time. 
+    expect(jest.fn).toHaveBeenCalledTimes(1);
+  });
 });
 
