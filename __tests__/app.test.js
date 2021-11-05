@@ -68,7 +68,7 @@ describe('03_separation-of-concerns-demo routes', () => {
     expect(getByIdResponse).toEqual({ ...newObj, id: expect.any(String) });
   });
 
-  it('Returns the updated Order', async () => {
+  it('Returns the updated Order', async() => {
     // declare a variable to store a new order object.
     const newObj = {
       quantity: 110
@@ -76,9 +76,10 @@ describe('03_separation-of-concerns-demo routes', () => {
     // declare a variable to store a Order.insert(newOrderObj) call.
     const insertResponse = await Order.insert(newObj.quantity);
     // declare a variable to store a Order.update(insertVar.id, newQuantity) call.
+    // console.log('insertResponse Id before updating :', insertResponse);
     await Order.update(insertResponse.id, 120);
     // declare a variable to store a Order.getById(insertVar.id) call.
-    const getByIdResponse = await Order.getById(insertResponse);
+    const getByIdResponse = await Order.getById(insertResponse.id);
     // expect the get response quantity to match the newQuantity.
     expect(getByIdResponse).toEqual({ id: insertResponse.id, quantity: 120 });
   });
