@@ -50,5 +50,41 @@ describe('tests OrderService Class methods/service', () => {
     // expect our mocked sendSms method to be called once for this test.
     expect(twilioUtils.sendSms).toHaveBeenCalledTimes(1);
   });
+
+  it('Returns an Order', async() => {
+    // declare a variable to store a new order object.
+    const newObj = {
+      quantity: 110
+    };
+
+    // declare a variable to store a Order.insert(newOrderObj) call.
+    const insertResponse = await Order.insert(newObj.quantity);
+    // declare a variable to store a Order.getById(insertVar.id) call.
+    const getByIdResponse = await OrderService.getById(insertResponse.id);
+    // expect the get response to be an object matching the new order object.
+    expect(getByIdResponse).toEqual({ ...newObj, id: expect.any(String) });
+  });
+
+  it('returns an array of Order instances', async() => {
+    // declare two-three new order objects. 
+    const firstNewObj = {
+      quantity: 10
+    };
+    const secondNewObj = {
+      quantity: 11
+    };
+
+    // declare an array consisting of the new order objects. 
+    const newObjArr = [firstNewObj, secondNewObj];
+
+    //  map the new object orders calling Order.insert(currNewOrderObj);
+    await newObjArr.map(async currObj => await Order.insert(currObj.quantity));
+
+    // declare a variable to store a Order.getAll() call.
+    const getAllResponse = await OrderService.getAll();
+
+    // expect the get response to be an array containing one of the new order objects.
+    expect(getAllResponse).toEqual(expect.arrayContaining([{ ...firstNewObj, id: expect.any(String) }]));
+  });
 });
 
