@@ -75,12 +75,24 @@ describe('03_separation-of-concerns-demo routes', () => {
       
     expect(getResponse.body).toEqual({ quantity: 15, id: postResponse.body.id });
   });
+
+  // it('Deletes the order with the given id, then sends an empty response with the status code of 204', async() => {
+  //   const postResponse = await request(app)
+  //     .post('/api/v1/orders')
+  //     .send({ quantity: 10 });
+
+  //   const deleteResponse = await request(app)
+  //     .delete(`/api/v1/orders/${postResponse.body.id}`)
+  //     .send({ quantity: 15 });  
+
+  //   expect(deleteResponse.body).toEqual('');
+  //   expect(deleteResponse.statusCode).toEqual(204);
+  // });
 });
 
 
 // Unit tests for all orders routes in __tests__/app.test.js
-//  - PATCH /api/v1/orders/:id
-//      - Takes a request body with a JSON object { "quantity": /* some number */} and updates the order with the given id
+
 //  - DELETE /api/v1/orders/:id
 //      - Deletes the order with the given id, then sends an empty response with the status code of 204.
 
