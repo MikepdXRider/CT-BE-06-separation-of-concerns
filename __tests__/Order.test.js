@@ -11,7 +11,7 @@ jest.mock('twilio', () => () => ({
   }
 }));
 
-describe('tests Order/model methods', () => {
+describe('tests Order/Model methods', () => {
   beforeEach(() => {
     return setup(pool);
   });
