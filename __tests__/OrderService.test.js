@@ -74,13 +74,10 @@ describe('03_separation-of-concerns-demo routes', () => {
     const insertResponse = await Order.insert(7);
 
     // call OrderService.deleteOrder() passing a new quantity and the insertResponse.id as an arguement
-    await OrderService.delete(insertResponse.id);
-
-    // declare a variable to store Order.getById(insertResponse.id);
-    const getByIdResponse = await Order.getById(insertResponse.id);
+    const deleteResponse = await OrderService.delete(insertResponse.id);
 
     // expect getByIdResponse toEqual an object with the new quantity and insertResponse.id property values. 
-    expect(getByIdResponse).toEqual(null);
+    expect(deleteResponse).toEqual({ id: insertResponse.id, quantity: 7 });
   });
 });
 
