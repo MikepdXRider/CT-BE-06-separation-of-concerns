@@ -8,26 +8,20 @@
 //  - DELETE /api/v1/orders/:id
 //      - Deletes the order with the given id, then sends an empty response with the status code of 204.
 
+// 🎉 Special shoutout to Dylan for offering this solution to the mocking confusion. 
+const twilioUtils = require('../lib/utils/twilio.js');
+twilioUtils.sendSms = jest.fn();
 
 const pool = require('../lib/utils/pool');
 const setup = require('../data/setup');
 const request = require('supertest');
 const app = require('../lib/app');
+// const Order = require('../lib/models/Order.js');
+// const OrderService = require('../lib/services/OrderService.js');
 
-
-
-// This doesn't make any sense to me... How do I use this in the tests?
-jest.mock('twilio', () => () => ({
-  messages: {
-    create: jest.fn()
-  }
-}));
-
-const Order = require('../lib/models/Order.js');
-const OrderService = require('../lib/services/OrderService.js');
-
-describe('03_separation-of-concerns-demo routes', () => {
+describe('tests routes/controller', () => {
   beforeEach(() => {
+    twilioUtils.sendSms.mockClear();
     return setup(pool);
   });
 

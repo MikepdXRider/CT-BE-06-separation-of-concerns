@@ -4,12 +4,8 @@ twilioUtils.sendSms = jest.fn();
 
 const pool = require('../lib/utils/pool');
 const setup = require('../data/setup');
-const request = require('supertest');
-const app = require('../lib/app');
 const Order = require('../lib/models/Order.js');
 const OrderService = require('../lib/services/OrderService.js');
-
-
 
 // This doesn't make any sense to me... How do I use this in the tests?
 // jest.mock('twilio', () => () => ({
@@ -18,24 +14,10 @@ const OrderService = require('../lib/services/OrderService.js');
 //   }
 // }));
 
-
-describe('03_separation-of-concerns-demo routes', () => {
+describe('tests OrderService Class methods/service', () => {
   beforeEach(() => {
     twilioUtils.sendSms.mockClear();
     return setup(pool);
-  });
-
-  it('creates a new order in our database and sends a text message', () => {
-    return request(app)
-      .post('/api/v1/orders')
-      .send({ quantity: 10 })
-      .then(res => {
-        // expect(createMessage).toHaveBeenCalledTimes(1);
-        expect(res.body).toEqual({
-          id: '1',
-          quantity: 10
-        });
-      });
   });
 
   it('Updates the order in the database and sends an update SMS', async() => {
@@ -50,6 +32,7 @@ describe('03_separation-of-concerns-demo routes', () => {
 
     // expect getByIdResponse toEqual an object with the new quantity and insertResponse.id property values. 
     expect(getByIdResponse).toEqual({ id: insertResponse.id, quantity: 10 });
+
     // expect our mocked sendSms method to be called once for this test.
     expect(twilioUtils.sendSms).toHaveBeenCalledTimes(1);
   });
@@ -63,6 +46,7 @@ describe('03_separation-of-concerns-demo routes', () => {
 
     // expect deleteResponse toEqual an object with expected quantity and id property values. 
     expect(deleteResponse).toEqual({ id: insertResponse.id, quantity: 7 });
+
     // expect our mocked sendSms method to be called once for this test.
     expect(twilioUtils.sendSms).toHaveBeenCalledTimes(1);
   });
