@@ -19,6 +19,13 @@ const app = require('../lib/app');
 // const Order = require('../lib/models/Order.js');
 // const OrderService = require('../lib/services/OrderService.js');
 
+// This doesn't make any sense to me... How do I use this in the tests?
+// jest.mock('twilio', () => () => ({
+//   messages: {
+//     create: jest.fn()
+//   }
+// }));
+
 describe('tests routes/controller', () => {
   beforeEach(() => {
     twilioUtils.sendSms.mockClear();

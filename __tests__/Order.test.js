@@ -3,13 +3,6 @@ const setup = require('../data/setup');
 // import in orders
 const Order = require('../lib/models/Order.js');
 
-// This doesn't make any sense to me... How is this being used in this file? 
-jest.mock('twilio', () => () => ({
-  messages: {
-    create: jest.fn()
-  }
-}));
-
 describe('tests Order/Model methods', () => {
   beforeEach(() => {
     return setup(pool);
