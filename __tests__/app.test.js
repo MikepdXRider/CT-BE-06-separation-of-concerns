@@ -84,15 +84,18 @@ describe('03_separation-of-concerns-demo routes', () => {
     expect(getByIdResponse).toEqual({ id: insertResponse.id, quantity: 120 });
   });
 
-  // it('Returns the deleted Order', () => {
-  //   // declare a variable to store a new order object.
-
-  //   // declare a variable to store a Order.insert(newOrderObj) call.
-
-  //   // declare a variable to store a Order.delete(insertVar.id) call.
-
-  //   // expect the delete response to match the newOrderObj.
-  // });
+  it('Returns the deleted Order', async() => {
+    // declare a variable to store a new order object.
+    const newObj = {
+      quantity: 25
+    };
+    // declare a variable to store a Order.insert(newOrderObj) call.
+    const insertResponse = await Order.insert(newObj.quantity);
+    // declare a variable to store a Order.delete(insertVar.id) call.
+    const deleteResponse = await Order.delete(insertResponse.id);
+    // expect the delete response to match the newOrderObj.
+    expect(deleteResponse).toEqual({ ...newObj, id: expect.any(String) });
+  });
 
 
 });
