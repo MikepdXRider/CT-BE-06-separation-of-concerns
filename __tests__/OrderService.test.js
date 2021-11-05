@@ -48,7 +48,7 @@ describe('03_separation-of-concerns-demo routes', () => {
     const insertResponse = await Order.insert(7);
 
     // call OrderService.update() passing a new quantity and the insertResponse.id as an arguement
-    await OrderService.update(insertResponse.id, 10);
+    await OrderService.updateOrder(insertResponse.id, 10);
 
     // declare a variable to store Order.getById(insertResponse.id);
     const getByIdResponse = await Order.getById(insertResponse.id);
