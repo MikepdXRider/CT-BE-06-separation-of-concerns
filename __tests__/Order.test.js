@@ -3,11 +3,10 @@ const setup = require('../data/setup');
 // import in orders
 const Order = require('../lib/models/Order.js');
 
-// This doesn't make any sense to me....
+// This doesn't make any sense to me... How is this being used in this file? 
 jest.mock('twilio', () => () => ({
   messages: {
     create: jest.fn()
-    // Am I supposed to add a new property and jest.fn() per each message type? What is messages.create event referencing? 
   }
 }));
 

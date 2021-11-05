@@ -1,32 +1,27 @@
+// 🎉 Special shoutout to Dylan for offering this solution to the mocking confusion. 
+const twilioUtils = require('../lib/utils/twilio.js');
+twilioUtils.sendSms = jest.fn();
+
 const pool = require('../lib/utils/pool');
 const setup = require('../data/setup');
 const request = require('supertest');
 const app = require('../lib/app');
-
-
-
-// Unit tests for all OrderService methods in __tests__/OrderService.test.js
-// - OrderService.update(id, quantity)
-// Updates the order in the database
-// Sends an "order updated" text message with the order ID and new quantity
-// - OrderService.delete(id)
-// Deletes the order from the database
-// Sends an "order deleted" text message with the order ID
-
-// This doesn't make any sense to me....
-
-jest.mock('twilio', () => () => ({
-  messages: {
-    create: jest.fn()
-    // Am I supposed to add a new property and jest.fn() per each message type? What is messages.create event referencing? 
-  }
-}));
-
 const Order = require('../lib/models/Order.js');
 const OrderService = require('../lib/services/OrderService.js');
 
+
+
+// This doesn't make any sense to me... How do I use this in the tests?
+// jest.mock('twilio', () => () => ({
+//   messages: {
+//     create: jest.fn()
+//   }
+// }));
+
+
 describe('03_separation-of-concerns-demo routes', () => {
   beforeEach(() => {
+    twilioUtils.sendSms.mockClear();
     return setup(pool);
   });
 
@@ -43,7 +38,7 @@ describe('03_separation-of-concerns-demo routes', () => {
       });
   });
 
-  it('Updates the order in the database', async() => {
+  it('Updates the order in the database and sends an update SMS', async() => {
     // declare a variable to store Order.insert(newOrderObj.quantity)
     const insertResponse = await Order.insert(7);
 
@@ -55,29 +50,21 @@ describe('03_separation-of-concerns-demo routes', () => {
 
     // expect getByIdResponse toEqual an object with the new quantity and insertResponse.id property values. 
     expect(getByIdResponse).toEqual({ id: insertResponse.id, quantity: 10 });
+    // expect our mocked sendSms method to be called once for this test.
+    expect(twilioUtils.sendSms).toHaveBeenCalledTimes(1);
   });
 
-  //   ❗ Can't figure out how to write this test... ❗
-  //   it('Sends an order updated text message with the order ID and new quantity', async() => {
-  //     // declare a variable to store Order.insert(newOrderObj.quantity)
-  //     const insertResponse = await Order.insert(7);
-
-  //     // call OrderService.update() passing a new quantity and the insertResponse.id as an arguement
-  //     await OrderService.updateOrder(insertResponse.id, 10);
-
-  //     // expect the mocked jest.fn to have been called one time. 
-  //     expect(jest.fn()).toHaveBeenCalledTimes(1);
-  //   });
-
-  it('Deletes the order from the database', async() => {
+  it('Deletes the order from the database and sends a delete SMS', async() => {
     // declare a variable to store Order.insert(newOrderObj.quantity)
     const insertResponse = await Order.insert(7);
 
     // call OrderService.deleteOrder() passing a new quantity and the insertResponse.id as an arguement
     const deleteResponse = await OrderService.delete(insertResponse.id);
 
-    // expect getByIdResponse toEqual an object with the new quantity and insertResponse.id property values. 
+    // expect deleteResponse toEqual an object with expected quantity and id property values. 
     expect(deleteResponse).toEqual({ id: insertResponse.id, quantity: 7 });
+    // expect our mocked sendSms method to be called once for this test.
+    expect(twilioUtils.sendSms).toHaveBeenCalledTimes(1);
   });
 });
 
