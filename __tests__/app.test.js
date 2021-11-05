@@ -60,14 +60,25 @@ describe('03_separation-of-concerns-demo routes', () => {
       
     expect(getResponse.body).toEqual(postResponse.body);
   });
+
+  it('Takes a request body with a JSON object { "quantity": /* some number */} and updates the order with the given id', async() => {
+    const postResponse = await request(app)
+      .post('/api/v1/orders')
+      .send({ quantity: 10 });
+
+    await request(app)
+      .patch(`/api/v1/orders/${postResponse.body.id}`)
+      .send({ quantity: 15 });  
+
+    const getResponse = await request(app)
+      .get(`/api/v1/orders/${postResponse.body.id}`);
+      
+    expect(getResponse.body).toEqual({ quantity: 15, id: postResponse.body.id });
+  });
 });
 
 
 // Unit tests for all orders routes in __tests__/app.test.js
-//  - GET /api/v1/orders
-//      - Responds with an array of all orders
-//  - GET /api/v1/orders/:id
-//      - Responds with an order object with the given id
 //  - PATCH /api/v1/orders/:id
 //      - Takes a request body with a JSON object { "quantity": /* some number */} and updates the order with the given id
 //  - DELETE /api/v1/orders/:id
