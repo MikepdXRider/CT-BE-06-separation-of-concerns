@@ -3,11 +3,10 @@ const setup = require('../data/setup');
 const request = require('supertest');
 const app = require('../lib/app');
 
-// This doesn't make any sense to me....
+// This doesn't make any sense to me... How am I supposed to use this in the test?
 jest.mock('twilio', () => () => ({
   messages: {
     create: jest.fn()
-    // Am I supposed to add a new property and jest.fn() per each message type? What is messages.create event referencing? 
   }
 }));
 
@@ -28,4 +27,49 @@ describe('03_separation-of-concerns-demo routes', () => {
         });
       });
   });
+
+  it('Responds with an array of orders', async() => {
+    const firstNewObj = {
+      quantity: 10
+    };
+    const secondNewObj = {
+      quantity: 20
+    };
+    const newObjArr = [firstNewObj, secondNewObj];
+
+    await Promise.all(
+      newObjArr.map(async currObj => await request(app)
+        .post('/api/v1/orders')
+        .send(currObj)
+      ));
+
+    const getAllResponse = await request(app)
+      .get('/api/v1/orders');
+
+
+    expect(getAllResponse.body).toEqual(expect.arrayContaining([{ id: expect.any(String), quantity: expect.any(Number) }]));
+  });
+
+  it('Responds with an order object with the given id', async() => {
+    const postResponse = await request(app)
+      .post('/api/v1/orders')
+      .send({ quantity: 10 });
+
+    const getResponse = await request(app)
+      .get(`/api/v1/orders/${postResponse.body.id}`);
+      
+    expect(getResponse.body).toEqual(postResponse.body);
+  });
 });
+
+
+// Unit tests for all orders routes in __tests__/app.test.js
+//  - GET /api/v1/orders
+//      - Responds with an array of all orders
+//  - GET /api/v1/orders/:id
+//      - Responds with an order object with the given id
+//  - PATCH /api/v1/orders/:id
+//      - Takes a request body with a JSON object { "quantity": /* some number */} and updates the order with the given id
+//  - DELETE /api/v1/orders/:id
+//      - Deletes the order with the given id, then sends an empty response with the status code of 204.
+
