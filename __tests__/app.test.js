@@ -76,18 +76,18 @@ describe('03_separation-of-concerns-demo routes', () => {
     expect(getResponse.body).toEqual({ quantity: 15, id: postResponse.body.id });
   });
 
-  // it('Deletes the order with the given id, then sends an empty response with the status code of 204', async() => {
-  //   const postResponse = await request(app)
-  //     .post('/api/v1/orders')
-  //     .send({ quantity: 10 });
+  it('Deletes the order with the given id, then sends an empty response with the status code of 204', async() => {
+    const postResponse = await request(app)
+      .post('/api/v1/orders')
+      .send({ quantity: 10 });
 
-  //   const deleteResponse = await request(app)
-  //     .delete(`/api/v1/orders/${postResponse.body.id}`)
-  //     .send({ quantity: 15 });  
+    const deleteResponse = await request(app)
+      .delete(`/api/v1/orders/${postResponse.body.id}`)
+      .send({ quantity: 15 });  
 
-  //   expect(deleteResponse.body).toEqual('');
-  //   expect(deleteResponse.statusCode).toEqual(204);
-  // });
+    expect(deleteResponse.body).toEqual('');
+    expect(deleteResponse.statusCode).toEqual(204);
+  });
 });
 
 
