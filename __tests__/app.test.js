@@ -85,14 +85,9 @@ describe('03_separation-of-concerns-demo routes', () => {
       .delete(`/api/v1/orders/${postResponse.body.id}`)
       .send({ quantity: 15 });  
 
-    expect(deleteResponse.body).toEqual('');
+    expect(deleteResponse.body).toEqual({});
     expect(deleteResponse.statusCode).toEqual(204);
   });
 });
 
-
-// Unit tests for all orders routes in __tests__/app.test.js
-
-//  - DELETE /api/v1/orders/:id
-//      - Deletes the order with the given id, then sends an empty response with the status code of 204.
 
